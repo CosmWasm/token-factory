@@ -5,12 +5,13 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	appparams "github.com/CosmWasm/token-factory/app/params"
 	"github.com/CosmWasm/token-factory/x/tokenfactory/types"
 )
 
 func TestDeconstructDenom(t *testing.T) {
-	appparams.SetAddressPrefixes()
+	// Note: this seems to be used in osmosis to add some more checks (only 20 or 32 byte addresses),
+	// which is good, but not required for these tests as they make code less reuable
+	// appparams.SetAddressPrefixes()
 
 	for _, tc := range []struct {
 		desc             string
@@ -69,7 +70,7 @@ func TestDeconstructDenom(t *testing.T) {
 }
 
 func TestGetTokenDenom(t *testing.T) {
-	appparams.SetAddressPrefixes()
+	// appparams.SetAddressPrefixes()
 	for _, tc := range []struct {
 		desc     string
 		creator  string

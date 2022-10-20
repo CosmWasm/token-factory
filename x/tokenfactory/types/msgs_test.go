@@ -7,7 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 
-	"github.com/CosmWasm/token-factory/app/apptesting"
+	"github.com/CosmWasm/token-factory/x/tokenfactory/testhelpers"
 	"github.com/CosmWasm/token-factory/x/tokenfactory/types"
 
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
@@ -61,7 +61,7 @@ func TestAuthzMsg(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			apptesting.TestMessageAuthzSerialization(t, tc.msg)
+			testhelpers.TestMessageAuthzSerialization(t, tc.msg)
 		})
 	}
 }
