@@ -9,6 +9,7 @@ require (
 	github.com/cosmos/go-bip39 v1.0.0
 	github.com/cosmos/iavl v0.19.3
 	github.com/cosmos/ibc-go/v3 v3.3.0
+	github.com/cosmos/interchain-accounts v0.1.0
 	github.com/gogo/protobuf v1.3.3
 	github.com/golang/mock v1.6.0
 	github.com/golang/protobuf v1.5.2
@@ -40,6 +41,7 @@ require (
 	cosmossdk.io/math v1.0.0-beta.3 // indirect
 	github.com/Djarvur/go-err113 v0.0.0-20210108212216-aea10b59be24 // indirect
 	github.com/alingse/asasalint v0.0.11 // indirect
+	github.com/cosmos/gogoproto v1.4.2 // indirect
 	github.com/creachadair/taskgroup v0.3.2 // indirect
 	github.com/curioswitch/go-reassign v0.1.2 // indirect
 	github.com/felixge/httpsnoop v1.0.1 // indirect
