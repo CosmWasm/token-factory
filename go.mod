@@ -5,9 +5,7 @@ go 1.18
 require (
 	github.com/CosmWasm/wasmd v0.29.1
 	github.com/cosmos/cosmos-proto v1.0.0-alpha7
-	github.com/cosmos/cosmos-sdk v0.46.3
-	// TODO: authz/codec seems to pull in 0.46 - figure out why and fix
-	// github.com/cosmos/cosmos-sdk v0.45.9
+	github.com/cosmos/cosmos-sdk v0.45.9
 	github.com/cosmos/go-bip39 v1.0.0
 	github.com/cosmos/iavl v0.19.3
 	github.com/cosmos/ibc-go/v3 v3.3.0
