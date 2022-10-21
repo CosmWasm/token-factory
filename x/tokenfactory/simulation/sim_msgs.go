@@ -1,5 +1,6 @@
 package simulation
 
+/*
 import (
 	"errors"
 
@@ -130,3 +131,4 @@ func getTokenFactoryDenomAndItsAdmin(k keeper.Keeper, sim *simtypes.SimCtx, ctx 
 	}
 	return denom, addr, nil
 }
+*/
