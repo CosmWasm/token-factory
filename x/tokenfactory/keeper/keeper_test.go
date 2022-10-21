@@ -7,11 +7,10 @@ import (
 	"github.com/stretchr/testify/suite"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
-	// TODO: pull this into tokenfactory
+	"github.com/CosmWasm/token-factory/app/apptesting"
 	"github.com/CosmWasm/token-factory/x/tokenfactory/keeper"
 	"github.com/CosmWasm/token-factory/x/tokenfactory/testhelpers"
 	"github.com/CosmWasm/token-factory/x/tokenfactory/types"
-	"github.com/osmosis-labs/osmosis/v12/app/apptesting"
 )
 
 type KeeperTestSuite struct {

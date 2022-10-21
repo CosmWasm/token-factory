@@ -21,10 +21,10 @@ import (
 // Deprecated: use public app attributes directly
 type TestSupport struct {
 	t   testing.TB
-	app *WasmApp
+	app *TokenApp
 }
 
-func NewTestSupport(t testing.TB, app *WasmApp) *TestSupport {
+func NewTestSupport(t testing.TB, app *TokenApp) *TestSupport {
 	return &TestSupport{t: t, app: app}
 }
 
