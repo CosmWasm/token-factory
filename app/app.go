@@ -110,6 +110,7 @@ import (
 
 	tokenappparams "github.com/CosmWasm/token-factory/app/params"
 	"github.com/CosmWasm/token-factory/x/tokenfactory"
+	"github.com/CosmWasm/token-factory/x/tokenfactory/bindings"
 	tokenfactorykeeper "github.com/CosmWasm/token-factory/x/tokenfactory/keeper"
 	tokenfactorytypes "github.com/CosmWasm/token-factory/x/tokenfactory/types"
 	"github.com/CosmWasm/wasmd/x/wasm"
@@ -249,7 +250,7 @@ type TokenApp struct {
 
 	// keepers
 	AccountKeeper       authkeeper.AccountKeeper
-	BankKeeper          bankkeeper.Keeper
+	BankKeeper          bankkeeper.BaseKeeper
 	CapabilityKeeper    *capabilitykeeper.Keeper
 	StakingKeeper       stakingkeeper.Keeper
 	SlashingKeeper      slashingkeeper.Keeper
@@ -523,7 +524,9 @@ func NewWasmApp(
 
 	// The last arguments can contain custom message handlers, and custom query handlers,
 	// if we want to allow any custom callbacks
-	availableCapabilities := "iterator,staking,stargate,cosmwasm_1_1"
+	availableCapabilities := "iterator,staking,stargate,cosmwasm_1_1,token_factory"
+	wasmOpts = append(bindings.RegisterCustomPlugins(&app.BankKeeper, &app.TokenFactoryKeeper), wasmOpts...)
+
 	app.WasmKeeper = wasm.NewKeeper(
 		appCodec,
 		keys[wasm.StoreKey],
