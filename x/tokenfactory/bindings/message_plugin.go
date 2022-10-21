@@ -244,22 +244,7 @@ func PerformSetMetadata(f *tokenfactorykeeper.Keeper, b *bankkeeper.BaseKeeper, 
 	}
 
 	// Create and validate the metadata
-	denoms := []*banktypes.DenomUnit{}
-	for _, unit := range metadata.DenomUnits {
-		denoms = append(denoms, &banktypes.DenomUnit{
-			Denom:    unit.Denom,
-			Exponent: unit.Exponent,
-			Aliases:  unit.Aliases,
-		})
-	}
-	bankMetadata := banktypes.Metadata{
-		Description: metadata.Description,
-		Display:     metadata.Display,
-		Base:        metadata.Base,
-		Name:        metadata.Name,
-		Symbol:      metadata.Symbol,
-		DenomUnits:  denoms,
-	}
+	bankMetadata := WasmMetadataToSdk(metadata)
 	if err := bankMetadata.Validate(); err != nil {
 		return err
 	}
@@ -293,4 +278,42 @@ func parseAddress(addr string) (sdk.AccAddress, error) {
 		return nil, sdkerrors.Wrap(err, "verify address format")
 	}
 	return parsed, nil
+}
+
+func WasmMetadataToSdk(metadata bindingstypes.Metadata) banktypes.Metadata {
+	denoms := []*banktypes.DenomUnit{}
+	for _, unit := range metadata.DenomUnits {
+		denoms = append(denoms, &banktypes.DenomUnit{
+			Denom:    unit.Denom,
+			Exponent: unit.Exponent,
+			Aliases:  unit.Aliases,
+		})
+	}
+	return banktypes.Metadata{
+		Description: metadata.Description,
+		Display:     metadata.Display,
+		Base:        metadata.Base,
+		Name:        metadata.Name,
+		Symbol:      metadata.Symbol,
+		DenomUnits:  denoms,
+	}
+}
+
+func SdkMetadataToWasm(metadata banktypes.Metadata) *bindingstypes.Metadata {
+	denoms := []bindingstypes.DenomUnit{}
+	for _, unit := range metadata.DenomUnits {
+		denoms = append(denoms, bindingstypes.DenomUnit{
+			Denom:    unit.Denom,
+			Exponent: unit.Exponent,
+			Aliases:  unit.Aliases,
+		})
+	}
+	return &bindingstypes.Metadata{
+		Description: metadata.Description,
+		Display:     metadata.Display,
+		Base:        metadata.Base,
+		Name:        metadata.Name,
+		Symbol:      metadata.Symbol,
+		DenomUnits:  denoms,
+	}
 }
