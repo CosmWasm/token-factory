@@ -35,7 +35,7 @@ func (suite *KeeperTestSuite) SetupTest() {
 	}
 
 	suite.queryClient = types.NewQueryClient(suite.QueryHelper)
-	suite.msgServer = keeper.NewMsgServerImpl(*suite.App.TokenFactoryKeeper)
+	suite.msgServer = keeper.NewMsgServerImpl(suite.App.TokenFactoryKeeper)
 }
 
 func (suite *KeeperTestSuite) CreateDefaultDenom() {
