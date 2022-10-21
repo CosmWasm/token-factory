@@ -108,7 +108,7 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
-	wasmappparams "github.com/CosmWasm/wasmd/app/params"
+	tokenappparams "github.com/CosmWasm/token-factory/app/params"
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmclient "github.com/CosmWasm/wasmd/x/wasm/client"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
@@ -290,7 +290,7 @@ func NewWasmApp(
 	skipUpgradeHeights map[int64]bool,
 	homePath string,
 	invCheckPeriod uint,
-	encodingConfig wasmappparams.EncodingConfig,
+	encodingConfig tokenappparams.EncodingConfig,
 	enabledProposals []wasm.ProposalType,
 	appOpts servertypes.AppOptions,
 	wasmOpts []wasm.Option,
