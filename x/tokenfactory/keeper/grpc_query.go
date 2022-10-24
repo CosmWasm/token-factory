@@ -30,6 +30,6 @@ func (k Keeper) DenomAuthorityMetadata(ctx context.Context, req *types.QueryDeno
 
 func (k Keeper) DenomsFromCreator(ctx context.Context, req *types.QueryDenomsFromCreatorRequest) (*types.QueryDenomsFromCreatorResponse, error) {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
-	denoms := k.getDenomsFromCreator(sdkCtx, req.GetCreator())
+	denoms := k.GetDenomsFromCreator(sdkCtx, req.GetCreator())
 	return &types.QueryDenomsFromCreatorResponse{Denoms: denoms}, nil
 }
