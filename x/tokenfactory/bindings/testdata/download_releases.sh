@@ -10,7 +10,7 @@ fi
 tag="$1"
 url="https://github.com/CosmWasm/token-bindings/releases/download/$tag/token_reflect.wasm"
 echo "Downloading $url ..."
-wget -O "osmo_reflect.wasm" "$url"
+wget -O "token_reflect.wasm" "$url"
 
 rm -f version.txt
 echo "$tag" >version.txt

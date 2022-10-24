@@ -9,10 +9,10 @@ type TokenQuery struct {
 	/// Given a subdenom minted by a contract via `OsmosisMsg::MintTokens`,
 	/// returns the full denom as used by `BankMsg::Send`.
 	FullDenom       *FullDenom       `json:"full_denom,omitempty"`
-	Metadata        *GetMetadata     `json:"metadata"`
-	Admin           *DenomAdmin      `json:"admin"`
-	DenomsByCreator *DenomsByCreator `json:"denoms_by_creator"`
-	Params          *GetParams       `json:"params"`
+	Admin           *DenomAdmin      `json:"admin,omitempty"`
+	Metadata        *GetMetadata     `json:"metadata,omitempty"`
+	DenomsByCreator *DenomsByCreator `json:"denoms_by_creator,omitempty"`
+	Params          *GetParams       `json:"params,omitempty"`
 }
 
 // query types
