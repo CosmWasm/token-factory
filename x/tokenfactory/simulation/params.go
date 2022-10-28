@@ -15,7 +15,8 @@ func ParamChanges(r *rand.Rand) []simtypes.ParamChange {
 			types.ModuleName,
 			string(types.KeyDenomCreationFee),
 			func(r *rand.Rand) string {
-				return fmt.Sprintf("%v", RandDenomCreationFeeParam(r))
+				amount := RandDenomCreationFeeParam(r)
+				return fmt.Sprintf("[{\"denom\":\"%v\",\"amount\":\"%v\"}]", amount[0].Denom, amount[0].Amount)
 			},
 		),
 	}
