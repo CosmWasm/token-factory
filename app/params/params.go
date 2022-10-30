@@ -6,4 +6,5 @@ const (
 	InitiallyBondedValidators = "initially_bonded_validators"
 
 	DefaultWeightMsgCreateDenom int = 100
+	DefaultWeightMsgMint        int = 100
 )
