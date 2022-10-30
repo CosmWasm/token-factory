@@ -22,6 +22,7 @@ type BankKeeper interface {
 	HasBalance(ctx sdk.Context, addr sdk.AccAddress, amt sdk.Coin) bool
 	GetAllBalances(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins
 	SpendableCoins(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins
+	GetBalance(ctx sdk.Context, addr sdk.AccAddress, denom string) sdk.Coin
 }
 
 type AccountKeeper interface {

@@ -34,6 +34,7 @@ type TokenfactoryKeeper interface {
 type BankKeeper interface {
 	simulation.BankKeeper
 	GetAllBalances(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins
+	GetBalance(ctx sdk.Context, addr sdk.AccAddress, denom string) sdk.Coin
 }
 
 func WeightedOperations(
@@ -46,7 +47,7 @@ func WeightedOperations(
 	var (
 		weightMsgCreateDenom int
 		weightMsgMint        int
-		// weightMsgBurn             int
+		weightMsgBurn        int
 		// weightMsgChangeAdmin      int
 		// weightMsgSetDenomMetadata int
 	)
@@ -59,6 +60,11 @@ func WeightedOperations(
 	simstate.AppParams.GetOrGenerate(simstate.Cdc, OpWeightMsgMint, &weightMsgMint, nil,
 		func(_ *rand.Rand) {
 			weightMsgMint = params.DefaultWeightMsgMint
+		},
+	)
+	simstate.AppParams.GetOrGenerate(simstate.Cdc, OpWeightMsgBurn, &weightMsgBurn, nil,
+		func(_ *rand.Rand) {
+			weightMsgMint = params.DefaultWeightMsgBurn
 		},
 	)
 
@@ -80,10 +86,19 @@ func WeightedOperations(
 				DefaultSimulationDenomSelector,
 			),
 		),
+		simulation.NewWeightedOperation(
+			weightMsgBurn,
+			SimulateMsgBurn(
+				tfKeeper,
+				ak,
+				bk,
+				DefaultSimulationDenomSelector,
+			),
+		),
 	}
 }
 
-type MsgMintDenomSelector = func(*rand.Rand, sdk.Context, TokenfactoryKeeper, string) (string, bool)
+type DenomSelector = func(*rand.Rand, sdk.Context, TokenfactoryKeeper, string) (string, bool)
 
 func DefaultSimulationDenomSelector(r *rand.Rand, ctx sdk.Context, tfKeeper TokenfactoryKeeper, creator string) (string, bool) {
 	denoms := tfKeeper.GetDenomsFromCreator(ctx, creator)
@@ -95,12 +110,51 @@ func DefaultSimulationDenomSelector(r *rand.Rand, ctx sdk.Context, tfKeeper Toke
 	return denoms[randPos], true
 }
 
+func SimulateMsgBurn(
+	tfKeeper TokenfactoryKeeper,
+	ak types.AccountKeeper,
+	bk BankKeeper,
+	denomSelector DenomSelector,
+) simtypes.Operation {
+	return func(
+		r *rand.Rand,
+		app *baseapp.BaseApp,
+		ctx sdk.Context,
+		accs []simtypes.Account,
+		chainID string,
+	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
+		// Get sims account
+		simAccount, _ := simtypes.RandomAcc(r, accs)
+		// Get denom created from sims account
+		denom, hasDenom := denomSelector(r, ctx, tfKeeper, simAccount.Address.String())
+		if !hasDenom {
+			return simtypes.NoOpMsg(types.ModuleName, types.MsgBurn{}.Type(), "sim account have no denom created"), nil, nil
+		}
+		// Check if sims account balance = 0
+		accountBalance := bk.GetBalance(ctx, simAccount.Address, denom)
+		if accountBalance.Amount.LTE(sdk.ZeroInt()) {
+			return simtypes.NoOpMsg(types.ModuleName, types.MsgBurn{}.Type(), "sim account have no balance"), nil, nil
+		}
+		// Rand burn amount
+		burnAmount, _ := simtypes.RandPositiveInt(r, accountBalance.Amount)
+
+		// Create msg
+		msg := types.MsgBurn{
+			Sender: simAccount.Address.String(),
+			Amount: sdk.NewCoin(denom, burnAmount),
+		}
+
+		txCtx := BuildOperationInput(r, app, ctx, &msg, simAccount, ak, bk, nil)
+		return simulation.GenAndDeliverTxWithRandFees(txCtx)
+	}
+}
+
 // Simulate msg mint denom
 func SimulateMsgMint(
 	tfKeeper TokenfactoryKeeper,
 	ak types.AccountKeeper,
 	bk BankKeeper,
-	denomSelector MsgMintDenomSelector,
+	denomSelector DenomSelector,
 ) simtypes.Operation {
 	return func(
 		r *rand.Rand,

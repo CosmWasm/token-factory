@@ -7,4 +7,5 @@ const (
 
 	DefaultWeightMsgCreateDenom int = 100
 	DefaultWeightMsgMint        int = 100
+	DefaultWeightMsgBurn        int = 100
 )
