@@ -143,17 +143,17 @@ func SimulateMsgChangeAdmin(
 		// Get demon
 		denom, hasDenom := denomSelector(r, ctx, tfKeeper, createdDenomAccount.Address.String())
 		if !hasDenom {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgMint{}.Type(), "sim account have no denom created"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, types.MsgChangeAdmin{}.Type(), "sim account have no denom created"), nil, nil
 		}
 
 		// Get admin of the denom
 		authData, err := tfKeeper.GetAuthorityMetadata(ctx, denom)
 		if err != nil {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgMint{}.Type(), "err authority metadata"), nil, err
+			return simtypes.NoOpMsg(types.ModuleName, types.MsgChangeAdmin{}.Type(), "err authority metadata"), nil, err
 		}
 		curAdminAccount, found := simtypes.FindAccount(accs, sdk.MustAccAddressFromBech32(authData.Admin))
 		if !found {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgMint{}.Type(), "admin account not found"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, types.MsgChangeAdmin{}.Type(), "admin account not found"), nil, nil
 		}
 
 		// Rand new admin account
@@ -193,17 +193,17 @@ func SimulateMsgBurn(
 		// Get demon
 		denom, hasDenom := denomSelector(r, ctx, tfKeeper, createdDenomAccount.Address.String())
 		if !hasDenom {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgMint{}.Type(), "sim account have no denom created"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, types.MsgBurn{}.Type(), "sim account have no denom created"), nil, nil
 		}
 
 		// Get admin of the denom
 		authData, err := tfKeeper.GetAuthorityMetadata(ctx, denom)
 		if err != nil {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgMint{}.Type(), "err authority metadata"), nil, err
+			return simtypes.NoOpMsg(types.ModuleName, types.MsgBurn{}.Type(), "err authority metadata"), nil, err
 		}
 		adminAccount, found := simtypes.FindAccount(accs, sdk.MustAccAddressFromBech32(authData.Admin))
 		if !found {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgMint{}.Type(), "admin account not found"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, types.MsgBurn{}.Type(), "admin account not found"), nil, nil
 		}
 
 		// Check if admin account balance = 0
