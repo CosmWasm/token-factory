@@ -1,7 +1,7 @@
 package bindings_test
 
 import (
-	"io/ioutil"
+	"os"
 	"testing"
 	"time"
 
@@ -49,7 +49,7 @@ func RandomBech32AccountAddress() string {
 }
 
 func storeReflectCode(t *testing.T, ctx sdk.Context, tokenz *app.TokenApp, addr sdk.AccAddress) uint64 {
-	wasmCode, err := ioutil.ReadFile("./testdata/token_reflect.wasm")
+	wasmCode, err := os.ReadFile("./testdata/token_reflect.wasm")
 	require.NoError(t, err)
 
 	contractKeeper := keeper.NewDefaultPermissionKeeper(tokenz.WasmKeeper)
@@ -78,12 +78,6 @@ func fundAccount(t *testing.T, ctx sdk.Context, tokenz *app.TokenApp, addr sdk.A
 	)
 	require.NoError(t, err)
 }
-
-var defaultFunds = sdk.NewCoins(
-	sdk.NewInt64Coin("uatom", 333000000),
-	sdk.NewInt64Coin("uosmo", 555000000),
-	sdk.NewInt64Coin("ustar", 999000000),
-)
 
 func SetupCustomApp(t *testing.T, addr sdk.AccAddress) (*app.TokenApp, sdk.Context) {
 	tokenz, ctx := CreateTestInput()
