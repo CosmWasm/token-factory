@@ -12,6 +12,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -24,7 +25,8 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 
 	// "github.com/osmosis-labs/osmosis/v12/simulation/simtypes"
-	// simulation "github.com/CosmWasm/token-factory/x/tokenfactory/simulation"
+	simulation "github.com/CosmWasm/token-factory/x/tokenfactory/simulation"
+	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 
 	"github.com/CosmWasm/token-factory/x/tokenfactory/client/cli"
 	"github.com/CosmWasm/token-factory/x/tokenfactory/keeper"
@@ -41,8 +43,7 @@ var (
 // ----------------------------------------------------------------------------
 
 // AppModuleBasic implements the AppModuleBasic interface for the capability module.
-type AppModuleBasic struct {
-}
+type AppModuleBasic struct{}
 
 func NewAppModuleBasic() AppModuleBasic {
 	return AppModuleBasic{}
@@ -201,3 +202,29 @@ func (am AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.Valid
 // 		simtypes.NewMsgBasedAction("change admin token factory token", am.keeper, simulation.RandomMsgChangeAdmin),
 // 	}
 // }
+
+// ____________________________________________________________________________
+
+// AppModuleSimulation functions
+func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
+	simulation.RandomizedGenState(simState)
+}
+
+// GenerateGenesisState creates a randomized GenState of the bank module.
+func (am AppModule) ProposalContents(simState module.SimulationState) []simtypes.WeightedProposalContent {
+	return nil
+}
+
+// RandomizedParams creates randomized bank param changes for the simulator.
+func (am AppModule) RandomizedParams(r *rand.Rand) []simtypes.ParamChange {
+	return simulation.ParamChanges(r)
+}
+
+// RegisterStoreDecoder registers a decoder for supply module's types
+func (am AppModule) RegisterStoreDecoder(sdr sdk.StoreDecoderRegistry) {
+}
+
+// WeightedOperations returns the all the gov module operations with their respective weights.
+func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
+	return simulation.WeightedOperations(&simState, am.keeper, am.accountKeeper, am.bankKeeper)
+}
