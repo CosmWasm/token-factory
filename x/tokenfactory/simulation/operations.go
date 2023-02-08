@@ -44,7 +44,6 @@ func WeightedOperations(
 	ak types.AccountKeeper,
 	bk BankKeeper,
 ) simulation.WeightedOperations {
-
 	var (
 		weightMsgCreateDenom      int
 		weightMsgMint             int
