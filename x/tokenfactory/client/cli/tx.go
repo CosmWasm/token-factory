@@ -2,6 +2,8 @@ package cli
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 
 	"github.com/spf13/cobra"
 
@@ -11,7 +13,11 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/CosmWasm/token-factory/x/tokenfactory/types"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 )
+
+var DENIED_DENOMS = [2]string{"ujuno", "juno"}
+var DENIED_STARTS_WITH_DENOMS = [2]string{"ibc/", "factory/"}
 
 // GetTxCmd returns the transaction commands for this module
 func GetTxCmd() *cobra.Command {
@@ -29,6 +35,7 @@ func GetTxCmd() *cobra.Command {
 		NewBurnCmd(),
 		// NewForceTransferCmd(),
 		NewChangeAdminCmd(),
+		NewModifyDenomMetadataCmd(),
 	)
 
 	return cmd
@@ -177,6 +184,72 @@ func NewChangeAdminCmd() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				args[0],
 				args[1],
+			)
+
+			return tx.GenerateOrBroadcastTxWithFactory(clientCtx, txf, msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+	return cmd
+}
+
+// NewModifyDenomMetadataCmd broadcast a Bank Metadata modification transaction
+func NewModifyDenomMetadataCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "modify-metadata [denom] [pretty-name] [ticker-symbol] [description] [exponent] [flags]",
+		Short: "Changes the base data for frontends to query the data of.",
+		Args:  cobra.ExactArgs(5),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			txf := tx.NewFactoryCLI(clientCtx, cmd.Flags()).WithTxConfig(clientCtx.TxConfig).WithAccountRetriever(clientCtx.AccountRetriever)
+
+			fullDenom, prettyName, ticker, desc := args[0], args[1], args[2], args[3]
+
+			for _, chainDenom := range DENIED_DENOMS {
+				if strings.ToLower(ticker) == chainDenom || strings.ToLower(prettyName) == chainDenom {
+					return fmt.Errorf("denied ticker symbol: %s", chainDenom)
+				}
+
+			}
+			for _, prefix := range DENIED_STARTS_WITH_DENOMS {
+				if strings.HasPrefix(strings.ToLower(ticker), prefix) || strings.HasPrefix(strings.ToLower(prettyName), prefix) {
+					return fmt.Errorf("denied ticker symbol: %s", prefix)
+				}
+			}
+
+			exponent, err := strconv.ParseUint(args[4], 10, 32)
+			if err != nil {
+				return err
+			}
+
+			bankMetadata := banktypes.Metadata{
+				Description: desc,
+				Display:     prettyName,
+				Symbol:      ticker,
+				Name:        prettyName,
+				DenomUnits: []*banktypes.DenomUnit{
+					{
+						Denom:    fullDenom,
+						Exponent: 0, // must be 0 for the base denom
+						Aliases:  []string{prettyName},
+					},
+					{
+						Denom:    prettyName,
+						Exponent: uint32(exponent),
+						Aliases:  []string{fullDenom},
+					},
+				},
+				Base: fullDenom,
+			}
+
+			msg := types.NewMsgSetDenomMetadata(
+				clientCtx.GetFromAddress().String(),
+				bankMetadata,
 			)
 
 			return tx.GenerateOrBroadcastTxWithFactory(clientCtx, txf, msg)
