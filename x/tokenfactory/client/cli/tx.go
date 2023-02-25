@@ -239,7 +239,7 @@ func NewModifyDenomMetadataCmd() *cobra.Command {
 				return fmt.Errorf("description cannot be greater than 255 characters: %d", len(desc))
 			}
 
-			deniedCharList := "@#$^*<>;()\\n\\t"
+			deniedCharList := "@#$^*<>;()"
 			if strings.ContainsAny(desc, deniedCharList) {
 				return fmt.Errorf("desc cannot contain special characters: %s", deniedCharList)
 			}
