@@ -16,8 +16,7 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 )
 
-var DENIED_DENOMS = [2]string{"ujuno", "juno"}
-var DENIED_STARTS_WITH_DENOMS = [2]string{"ibc/", "factory/"}
+var DeniedDenoms = [4]string{"ujuno", "juno", "ibc/", "factory/"}
 
 // GetTxCmd returns the transaction commands for this module
 func GetTxCmd() *cobra.Command {
@@ -210,15 +209,9 @@ func NewModifyDenomMetadataCmd() *cobra.Command {
 
 			fullDenom, prettyName, ticker, desc := args[0], args[1], args[2], args[3]
 
-			for _, chainDenom := range DENIED_DENOMS {
-				if strings.ToLower(ticker) == chainDenom || strings.ToLower(prettyName) == chainDenom {
-					return fmt.Errorf("denied ticker symbol: %s", chainDenom)
-				}
-
-			}
-			for _, prefix := range DENIED_STARTS_WITH_DENOMS {
+			for _, prefix := range DeniedDenoms {
 				if strings.HasPrefix(strings.ToLower(ticker), prefix) || strings.HasPrefix(strings.ToLower(prettyName), prefix) {
-					return fmt.Errorf("denied ticker symbol: %s", prefix)
+					return fmt.Errorf("ticker or prefix symbol which starts with: %s is not allowed", prefix)
 				}
 			}
 

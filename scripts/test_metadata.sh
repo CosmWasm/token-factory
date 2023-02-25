@@ -21,6 +21,7 @@ BINARY tx tokenfactory modify-metadata factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxz
 # fails
 BINARY tx tokenfactory modify-metadata factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM2 "ujuno" "TICKER" "desc" 6 $FLAGS
 BINARY tx tokenfactory modify-metadata factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM2 "juno" "TICKER" "desc" 6 $FLAGS
+BINARY tx tokenfactory modify-metadata factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM2 "good" "UJUNO" "desc" 6 $FLAGS
 BINARY tx tokenfactory modify-metadata factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM2 "ibc/test" "TICKER" "desc" 1 $FLAGS
 BINARY tx tokenfactory modify-metadata factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM2 "factory/" "TICKER" "desc" 1 $FLAGS
 
