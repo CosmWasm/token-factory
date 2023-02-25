@@ -216,6 +216,7 @@ func NewModifyDenomMetadataCmd() *cobra.Command {
 				return fmt.Errorf("denom must start with factory/")
 			}
 
+			// Ticker Checks
 			for _, prefix := range DeniedDenoms {
 				if strings.Contains(strings.ToLower(ticker), prefix) {
 					return fmt.Errorf("ticker contains a denied word: %s and is not allowed", prefix)
@@ -233,6 +234,17 @@ func NewModifyDenomMetadataCmd() *cobra.Command {
 				return fmt.Errorf("ticker cannot be empty")
 			}
 
+			// Description Length Checks
+			if len(desc) > 255 {
+				return fmt.Errorf("description cannot be greater than 255 characters: %d", len(desc))
+			}
+
+			deniedCharList := "@#$^*<>;()\\n\\t"
+			if strings.ContainsAny(desc, deniedCharList) {
+				return fmt.Errorf("desc cannot contain special characters: %s", deniedCharList)
+			}
+
+			// Exponent Checks
 			exponent, err := strconv.ParseUint(args[3], 10, 32)
 			if err != nil {
 				return err

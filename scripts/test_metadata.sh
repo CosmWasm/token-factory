@@ -22,10 +22,14 @@ BINARY query tokenfactory denoms-from-creator wasm1hj5fveer5cjtn4wd6wstzugjfdxzl
 
 # set the metadata for it
 BINARY tx tokenfactory modify-metadata $DENOM "ticker" "some desc https://www.com" 6 $FLAGS
-BINARY tx tokenfactory modify-metadata $DENOM "ticker" "" 18 $FLAGS
+BINARY tx tokenfactory modify-metadata $DENOM "ticker" "updated desc https://google.com" 18 $FLAGS
 BINARY q bank denom-metadata --denom $DENOM --node http://localhost:26657
 
 # fails
+BINARY tx tokenfactory modify-metadata $DENOM "ticker" "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" 18 $FLAGS
+BINARY tx tokenfactory modify-metadata $DENOM "ticker" "<html>" 18 $FLAGS
+BINARY tx tokenfactory modify-metadata $DENOM "ticker" "\n\n\n\n\ntest\n\n\n" 18 $FLAGS
+BINARY tx tokenfactory modify-metadata $DENOM "ticker" "alert('test')" 18 $FLAGS
 BINARY tx tokenfactory modify-metadata $DENOM2 "JUNO" "desc" 6 $FLAGS
 BINARY tx tokenfactory modify-metadata $DENOM2 "!" "desc" 6 $FLAGS
 BINARY tx tokenfactory modify-metadata $DENOM2 "LJUNO" "desc" 6 $FLAGS
@@ -40,6 +44,6 @@ BINARY tx tokenfactory modify-metadata $DENOM_NOT_MINE "notmy" "desc" 1 $FLAGS
 
 # query data
 
-BINARY q bank denom-metadata --denom $DENOM2 --node http://localhost:26657
+BINARY q bank denom-metadata --denom $DENOM --node http://localhost:26657
 
 BINARY tx tokenfactory mint 100$DENOM $FLAGS
