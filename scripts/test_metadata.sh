@@ -7,26 +7,39 @@ export BINARY=${BINARY:-toked}
 alias BINARY="$BINARY --home=$HOME_DIR"
 
 FLAGS="--from $KEY --keyring-backend=test --gas=1000000 --node http://localhost:26657 --chain-id tf-1 --yes --broadcast-mode=block"
+FLAGS2="--from feeacc --keyring-backend=test --gas=1000000 --node http://localhost:26657 --chain-id tf-1 --yes --broadcast-mode=block"
 
-DENOM=test
-DENOM2=test2
-BINARY tx tokenfactory create-denom $DENOM $FLAGS
-BINARY tx tokenfactory create-denom $DENOM2 $FLAGS
+# toked keys list --keyring-backend test --home $HOME_DIR
+DENOM=factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/test
+DENOM2=factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/test2
+DENOM_NOT_MINE=factory/wasm1efd63aw40lxf3n4mhf7dzhjkr453axursysrvp/notmine
+
+BINARY tx tokenfactory create-denom test $FLAGS
+BINARY tx tokenfactory create-denom test2 $FLAGS
+BINARY tx tokenfactory create-denom notmine $FLAGS2
 
 BINARY query tokenfactory denoms-from-creator wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g --node http://localhost:26657
 
 # set the metadata for it
-BINARY tx tokenfactory modify-metadata factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM "udenom" "TICKER" "some desc https://www.com" 6 $FLAGS
+BINARY tx tokenfactory modify-metadata $DENOM "ticker" "some desc https://www.com" 6 $FLAGS
+BINARY tx tokenfactory modify-metadata $DENOM "ticker" "" 18 $FLAGS
+BINARY q bank denom-metadata --denom $DENOM --node http://localhost:26657
 
 # fails
-BINARY tx tokenfactory modify-metadata factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM2 "ujuno" "TICKER" "desc" 6 $FLAGS
-BINARY tx tokenfactory modify-metadata factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM2 "juno" "TICKER" "desc" 6 $FLAGS
-BINARY tx tokenfactory modify-metadata factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM2 "good" "UJUNO" "desc" 6 $FLAGS
-BINARY tx tokenfactory modify-metadata factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM2 "ibc/test" "TICKER" "desc" 1 $FLAGS
-BINARY tx tokenfactory modify-metadata factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM2 "factory/" "TICKER" "desc" 1 $FLAGS
+BINARY tx tokenfactory modify-metadata $DENOM2 "JUNO" "desc" 6 $FLAGS
+BINARY tx tokenfactory modify-metadata $DENOM2 "!" "desc" 6 $FLAGS
+BINARY tx tokenfactory modify-metadata $DENOM2 "LJUNO" "desc" 6 $FLAGS
+BINARY tx tokenfactory modify-metadata $DENOM2 "LUJUNO" "desc" 6 $FLAGS
+BINARY tx tokenfactory modify-metadata $DENOM2 "sla/sh" "desc" 6 $FLAGS
+BINARY tx tokenfactory modify-metadata $DENOM2 "thelengthiswaytoolonghere" "desc" 1 $FLAGS
+BINARY tx tokenfactory modify-metadata $DENOM2 "" "desc" 1 $FLAGS
+BINARY tx tokenfactory modify-metadata $DENOM2 "expont" "desc" 19 $FLAGS
+
+# can't edit a token we don't own (tries to edit feeacc's address)
+BINARY tx tokenfactory modify-metadata $DENOM_NOT_MINE "notmy" "desc" 1 $FLAGS
 
 # query data
-BINARY q bank denom-metadata --denom factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM --node http://localhost:26657
-BINARY q bank denom-metadata --denom factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM2 --node http://localhost:26657
 
-BINARY tx tokenfactory mint 100factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM $FLAGS
+BINARY q bank denom-metadata --denom $DENOM2 --node http://localhost:26657
+
+BINARY tx tokenfactory mint 100$DENOM $FLAGS
