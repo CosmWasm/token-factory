@@ -16,7 +16,7 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 )
 
-var DeniedDenoms = [4]string{"ujuno", "juno", "ibc/", "factory/"}
+var DeniedDenoms = [1]string{"juno"}
 
 // GetTxCmd returns the transaction commands for this module
 func GetTxCmd() *cobra.Command {
@@ -196,43 +196,65 @@ func NewChangeAdminCmd() *cobra.Command {
 // NewModifyDenomMetadataCmd broadcast a Bank Metadata modification transaction
 func NewModifyDenomMetadataCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "modify-metadata [denom] [pretty-name] [ticker-symbol] [description] [exponent] [flags]",
+		Use:   "modify-metadata [denom] [ticker-symbol] [description] [exponent] [flags]",
 		Short: "Changes the base data for frontends to query the data of.",
-		Args:  cobra.ExactArgs(5),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
+			maxTickerLength := 6
+			maxExponent := 18
+
 			txf := tx.NewFactoryCLI(clientCtx, cmd.Flags()).WithTxConfig(clientCtx.TxConfig).WithAccountRetriever(clientCtx.AccountRetriever)
 
-			fullDenom, prettyName, ticker, desc := args[0], args[1], args[2], args[3]
+			fullDenom, ticker, desc := args[0], strings.ToUpper(args[1]), args[2]
+
+			if !strings.HasPrefix(fullDenom, "factory/") {
+				return fmt.Errorf("denom must start with factory/")
+			}
 
 			for _, prefix := range DeniedDenoms {
-				if strings.HasPrefix(strings.ToLower(ticker), prefix) || strings.HasPrefix(strings.ToLower(prettyName), prefix) {
-					return fmt.Errorf("ticker or prefix symbol which starts with: %s is not allowed", prefix)
+				if strings.Contains(strings.ToLower(ticker), prefix) {
+					return fmt.Errorf("ticker contains a denied word: %s and is not allowed", prefix)
+				}
+
+				if strings.Contains(ticker, "/") {
+					return fmt.Errorf("ticker cannot contain a / (slash)")
 				}
 			}
 
-			exponent, err := strconv.ParseUint(args[4], 10, 32)
+			// check if the length of ticker is greater than 6
+			if len(ticker) > maxTickerLength {
+				return fmt.Errorf("ticker cannot be greater than 6 characters")
+			} else if len(ticker) == 0 {
+				return fmt.Errorf("ticker cannot be empty")
+			}
+
+			exponent, err := strconv.ParseUint(args[3], 10, 32)
 			if err != nil {
 				return err
 			}
 
+			if exponent > uint64(maxExponent) {
+				return fmt.Errorf("exponent cannot be greater than %d", maxExponent)
+			}
+
 			bankMetadata := banktypes.Metadata{
 				Description: desc,
-				Display:     prettyName,
+				Display:     fullDenom,
 				Symbol:      ticker,
-				Name:        prettyName,
+				Name:        fullDenom,
 				DenomUnits: []*banktypes.DenomUnit{
 					{
 						Denom:    fullDenom,
 						Exponent: 0, // must be 0 for the base denom
-						Aliases:  []string{prettyName},
+						Aliases:  []string{ticker},
 					},
 					{
-						Denom:    prettyName,
+						Denom:    ticker,
 						Exponent: uint32(exponent),
 						Aliases:  []string{fullDenom},
 					},
