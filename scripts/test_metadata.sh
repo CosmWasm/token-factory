@@ -6,11 +6,12 @@ export BINARY=${BINARY:-toked}
 
 alias BINARY="$BINARY --home=$HOME_DIR"
 
-FLAGS="--from $KEY --keyring-backend=test --gas=1000000 --node http://localhost:26657 --chain-id tf-1 --yes"
+FLAGS="--from $KEY --keyring-backend=test --gas=1000000 --node http://localhost:26657 --chain-id tf-1 --yes --broadcast-mode=block"
 
 DENOM=test
+DENOM2=test2
 BINARY tx tokenfactory create-denom $DENOM $FLAGS
-BINARY tx tokenfactory create-denom "$DENOM"2 $FLAGS
+BINARY tx tokenfactory create-denom $DENOM2 $FLAGS
 
 BINARY query tokenfactory denoms-from-creator wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g --node http://localhost:26657
 
@@ -23,6 +24,8 @@ BINARY tx tokenfactory modify-metadata factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxz
 BINARY tx tokenfactory modify-metadata factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM2 "ibc/test" "TICKER" "desc" 1 $FLAGS
 BINARY tx tokenfactory modify-metadata factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM2 "factory/" "TICKER" "desc" 1 $FLAGS
 
-BINARY q bank denom-metadata --node http://localhost:26657
+# query data
+BINARY q bank denom-metadata --denom factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM --node http://localhost:26657
+BINARY q bank denom-metadata --denom factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM2 --node http://localhost:26657
 
 BINARY tx tokenfactory mint 100factory/wasm1hj5fveer5cjtn4wd6wstzugjfdxzl0xpvsr89g/$DENOM $FLAGS
