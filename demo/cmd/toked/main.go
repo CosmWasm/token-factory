@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/CosmWasm/token-factory/demo/app"
 	"os"
+
+	"github.com/CosmWasm/token-factory/demo/app"
 
 	"github.com/cosmos/cosmos-sdk/server"
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"

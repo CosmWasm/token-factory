@@ -1,8 +1,9 @@
 package app
 
 import (
-	params2 "github.com/CosmWasm/token-factory/demo/app/params"
 	"github.com/cosmos/cosmos-sdk/std"
+
+	params2 "github.com/CosmWasm/token-factory/demo/app/params"
 )
 
 // MakeEncodingConfig creates a new EncodingConfig with all modules registered

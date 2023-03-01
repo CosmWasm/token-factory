@@ -3,9 +3,10 @@ package apptesting
 import (
 	"encoding/json"
 	"fmt"
-	app2 "github.com/CosmWasm/token-factory/demo/app"
 	"testing"
 	"time"
+
+	app2 "github.com/CosmWasm/token-factory/demo/app"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"

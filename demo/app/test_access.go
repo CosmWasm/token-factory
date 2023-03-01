@@ -1,8 +1,9 @@
 package app
 
 import (
-	"github.com/CosmWasm/token-factory/demo/app/params"
 	"testing"
+
+	"github.com/CosmWasm/token-factory/demo/app/params"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"

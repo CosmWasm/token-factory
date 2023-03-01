@@ -3,8 +3,9 @@ package e2e_test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/CosmWasm/token-factory/demo/app"
 	"testing"
+
+	"github.com/CosmWasm/token-factory/demo/app"
 
 	"github.com/stretchr/testify/require"
 

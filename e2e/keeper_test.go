@@ -1,8 +1,9 @@
 package e2e_test
 
 import (
-	"github.com/CosmWasm/token-factory/e2e/apptesting"
 	"testing"
+
+	"github.com/CosmWasm/token-factory/e2e/apptesting"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/suite"
