@@ -1,4 +1,4 @@
-package keeper_test
+package e2e_test
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -7,7 +7,7 @@ import (
 	"github.com/CosmWasm/token-factory/x/tokenfactory/types"
 )
 
-func (suite *KeeperTestSuite) TestGenesis() {
+func (suite *e2e.KeeperTestSuite) TestGenesis() {
 	genesisState := types.GenesisState{
 		FactoryDenoms: []types.GenesisDenom{
 			{

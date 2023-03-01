@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	tokenappparams "github.com/CosmWasm/token-factory/demo/app/params"
 	"io"
 	"net/http"
 	"os"
@@ -111,7 +112,6 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
-	tokenappparams "github.com/CosmWasm/token-factory/app/params"
 	"github.com/CosmWasm/token-factory/x/tokenfactory"
 	"github.com/CosmWasm/token-factory/x/tokenfactory/bindings"
 	tokenfactorykeeper "github.com/CosmWasm/token-factory/x/tokenfactory/keeper"

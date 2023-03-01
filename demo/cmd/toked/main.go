@@ -1,12 +1,11 @@
 package main
 
 import (
+	"github.com/CosmWasm/token-factory/demo/app"
 	"os"
 
 	"github.com/cosmos/cosmos-sdk/server"
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
-
-	"github.com/CosmWasm/token-factory/app"
 )
 
 func main() {

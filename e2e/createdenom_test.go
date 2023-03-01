@@ -1,4 +1,4 @@
-package keeper_test
+package e2e_test
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"github.com/CosmWasm/token-factory/x/tokenfactory/types"
 )
 
-func (suite *KeeperTestSuite) TestMsgCreateDenom() {
+func (suite *e2e.KeeperTestSuite) TestMsgCreateDenom() {
 	var (
 		tokenFactoryKeeper = suite.App.TokenFactoryKeeper
 		bankKeeper         = suite.App.BankKeeper
@@ -61,7 +61,7 @@ func (suite *KeeperTestSuite) TestMsgCreateDenom() {
 	suite.Require().Error(err)
 }
 
-func (suite *KeeperTestSuite) TestCreateDenom() {
+func (suite *e2e.KeeperTestSuite) TestCreateDenom() {
 	var (
 		primaryDenom            = types.DefaultParams().DenomCreationFee[0].Denom
 		secondaryDenom          = testhelpers.SecondaryDenom

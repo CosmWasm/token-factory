@@ -1,8 +1,9 @@
-package bindings_test
+package e2e_test
 
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/CosmWasm/token-factory/demo/app"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -10,7 +11,6 @@ import (
 	wasmvmtypes "github.com/CosmWasm/wasmvm/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/CosmWasm/token-factory/app"
 	bindings "github.com/CosmWasm/token-factory/x/tokenfactory/bindings/types"
 )
 

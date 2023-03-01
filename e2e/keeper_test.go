@@ -1,13 +1,13 @@
-package keeper_test
+package e2e_test
 
 import (
+	"github.com/CosmWasm/token-factory/e2e/apptesting"
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/suite"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
-	"github.com/CosmWasm/token-factory/app/apptesting"
 	"github.com/CosmWasm/token-factory/x/tokenfactory/keeper"
 	"github.com/CosmWasm/token-factory/x/tokenfactory/testhelpers"
 	"github.com/CosmWasm/token-factory/x/tokenfactory/types"

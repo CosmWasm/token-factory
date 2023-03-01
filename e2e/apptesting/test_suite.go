@@ -3,6 +3,7 @@ package apptesting
 import (
 	"encoding/json"
 	"fmt"
+	app2 "github.com/CosmWasm/token-factory/demo/app"
 	"testing"
 	"time"
 
@@ -30,14 +31,13 @@ import (
 
 	authzcodec "github.com/CosmWasm/token-factory/x/tokenfactory/types/authzcodec"
 
-	"github.com/CosmWasm/token-factory/app"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 )
 
 type KeeperTestHelper struct {
 	suite.Suite
 
-	App         *app.TokenApp
+	App         *app2.TokenApp
 	Ctx         sdk.Context
 	QueryHelper *baseapp.QueryServiceTestHelper
 	TestAccs    []sdk.AccAddress
@@ -50,7 +50,7 @@ var (
 
 // Setup sets up basic environment for suite (App, Ctx, and test accounts)
 func (s *KeeperTestHelper) Setup() {
-	s.App = app.Setup(false)
+	s.App = app2.Setup(false)
 	s.Ctx = s.App.BaseApp.NewContext(false, tmtypes.Header{Height: 1, ChainID: "osmosis-1", Time: time.Now().UTC()})
 	s.QueryHelper = &baseapp.QueryServiceTestHelper{
 		GRPCQueryRouter: s.App.GRPCQueryRouter(),
@@ -61,7 +61,7 @@ func (s *KeeperTestHelper) Setup() {
 
 func (s *KeeperTestHelper) SetupTestForInitGenesis() {
 	// Setting to True, leads to init genesis not running
-	s.App = app.Setup(true)
+	s.App = app2.Setup(true)
 	s.Ctx = s.App.BaseApp.NewContext(true, tmtypes.Header{})
 }
 
