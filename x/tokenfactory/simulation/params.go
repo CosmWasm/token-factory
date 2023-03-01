@@ -10,6 +10,15 @@ import (
 	"github.com/CosmWasm/token-factory/x/tokenfactory/types"
 )
 
+// Simulation parameter constants
+const (
+	DefaultWeightMsgCreateDenom      int = 100
+	DefaultWeightMsgMint             int = 100
+	DefaultWeightMsgBurn             int = 100
+	DefaultWeightMsgChangeAdmin      int = 100
+	DefaultWeightMsgSetDenomMetadata int = 100
+)
+
 func ParamChanges(r *rand.Rand) []simtypes.ParamChange {
 	return []simtypes.ParamChange{
 		simulation.NewSimParamChange(

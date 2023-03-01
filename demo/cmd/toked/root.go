@@ -6,8 +6,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/CosmWasm/token-factory/demo/app"
-	"github.com/CosmWasm/token-factory/demo/app/params"
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
@@ -35,6 +33,9 @@ import (
 	tmcli "github.com/tendermint/tendermint/libs/cli"
 	"github.com/tendermint/tendermint/libs/log"
 	dbm "github.com/tendermint/tm-db"
+
+	"github.com/CosmWasm/token-factory/demo/app"
+	"github.com/CosmWasm/token-factory/demo/app/params"
 )
 
 // NewRootCmd creates a new root command for toked. It is called once in the

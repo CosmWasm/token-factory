@@ -5,7 +5,6 @@ go 1.19
 replace github.com/CosmWasm/token-factory/demo => ./demo
 
 require (
-	github.com/CosmWasm/token-factory/demo v0.0.0-00010101000000-000000000000
 	github.com/CosmWasm/wasmd v0.30.0
 	github.com/cosmos/cosmos-proto v1.0.0-alpha8
 	github.com/cosmos/cosmos-sdk v0.45.11
@@ -25,6 +24,7 @@ require (
 	github.com/cosmos/gogoproto v1.4.3 // indirect
 	github.com/cosmos/iavl v0.19.4 // indirect
 	github.com/cosmos/ibc-go/v4 v4.2.0 // indirect
+	github.com/cosmos/interchain-accounts v0.2.5 // indirect
 	github.com/creachadair/taskgroup v0.3.2 // indirect
 	github.com/docker/distribution v2.8.1+incompatible // indirect
 	github.com/felixge/httpsnoop v1.0.2 // indirect

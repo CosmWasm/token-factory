@@ -11,7 +11,6 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
-	"github.com/CosmWasm/token-factory/demo/app/params"
 	"github.com/CosmWasm/token-factory/x/tokenfactory/types"
 )
 
@@ -55,27 +54,27 @@ func WeightedOperations(
 
 	simstate.AppParams.GetOrGenerate(simstate.Cdc, OpWeightMsgCreateDenom, &weightMsgCreateDenom, nil,
 		func(_ *rand.Rand) {
-			weightMsgCreateDenom = params.DefaultWeightMsgCreateDenom
+			weightMsgCreateDenom = DefaultWeightMsgCreateDenom
 		},
 	)
 	simstate.AppParams.GetOrGenerate(simstate.Cdc, OpWeightMsgMint, &weightMsgMint, nil,
 		func(_ *rand.Rand) {
-			weightMsgMint = params.DefaultWeightMsgMint
+			weightMsgMint = DefaultWeightMsgMint
 		},
 	)
 	simstate.AppParams.GetOrGenerate(simstate.Cdc, OpWeightMsgBurn, &weightMsgBurn, nil,
 		func(_ *rand.Rand) {
-			weightMsgBurn = params.DefaultWeightMsgBurn
+			weightMsgBurn = DefaultWeightMsgBurn
 		},
 	)
 	simstate.AppParams.GetOrGenerate(simstate.Cdc, OpWeightMsgChangeAdmin, &weightMsgChangeAdmin, nil,
 		func(_ *rand.Rand) {
-			weightMsgChangeAdmin = params.DefaultWeightMsgChangeAdmin
+			weightMsgChangeAdmin = DefaultWeightMsgChangeAdmin
 		},
 	)
 	simstate.AppParams.GetOrGenerate(simstate.Cdc, OpWeightMsgSetDenomMetadata, &weightMsgSetDenomMetadata, nil,
 		func(_ *rand.Rand) {
-			weightMsgSetDenomMetadata = params.DefaultWeightMsgSetDenomMetadata
+			weightMsgSetDenomMetadata = DefaultWeightMsgSetDenomMetadata
 		},
 	)
 

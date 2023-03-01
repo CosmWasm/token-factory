@@ -6,8 +6,6 @@ import (
 	"testing"
 	"time"
 
-	app2 "github.com/CosmWasm/token-factory/demo/app"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
