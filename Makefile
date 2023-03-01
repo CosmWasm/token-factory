@@ -82,7 +82,7 @@ build: go.sum
 ifeq ($(OS),Windows_NT)
 	exit 1
 else
-	go build -mod=readonly $(BUILD_FLAGS) -o build/toked ./cmd/toked
+	go build -mod=readonly $(BUILD_FLAGS) -o build/toked ./demo/cmd/toked
 endif
 
 build-contract-tests-hooks:
@@ -93,7 +93,7 @@ else
 endif
 
 install: go.sum
-	go install -mod=readonly $(BUILD_FLAGS) ./cmd/toked
+	go install -mod=readonly $(BUILD_FLAGS) ./demo/cmd/toked
 
 ########################################
 ### Tools & dependencies

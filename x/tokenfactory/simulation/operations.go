@@ -3,7 +3,7 @@ package simulation
 import (
 	"math/rand"
 
-	"github.com/CosmWasm/token-factory/app/params"
+	"github.com/CosmWasm/token-factory/demo/app/params"
 	"github.com/CosmWasm/token-factory/x/tokenfactory/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
@@ -44,7 +44,6 @@ func WeightedOperations(
 	ak types.AccountKeeper,
 	bk BankKeeper,
 ) simulation.WeightedOperations {
-
 	var (
 		weightMsgCreateDenom      int
 		weightMsgMint             int
