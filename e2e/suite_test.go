@@ -3,12 +3,11 @@ package e2e_test
 import (
 	"testing"
 
-	"github.com/CosmWasm/token-factory/e2e/apptesting"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/suite"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
+	"github.com/CosmWasm/token-factory/e2e/apptesting"
 	"github.com/CosmWasm/token-factory/x/tokenfactory/keeper"
 	"github.com/CosmWasm/token-factory/x/tokenfactory/testhelpers"
 	"github.com/CosmWasm/token-factory/x/tokenfactory/types"

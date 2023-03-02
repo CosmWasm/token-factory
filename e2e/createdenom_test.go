@@ -9,7 +9,7 @@ import (
 	"github.com/CosmWasm/token-factory/x/tokenfactory/types"
 )
 
-func (suite *e2e.KeeperTestSuite) TestMsgCreateDenom() {
+func (suite *KeeperTestSuite) TestMsgCreateDenom() {
 	var (
 		tokenFactoryKeeper = suite.App.TokenFactoryKeeper
 		bankKeeper         = suite.App.BankKeeper
@@ -61,7 +61,7 @@ func (suite *e2e.KeeperTestSuite) TestMsgCreateDenom() {
 	suite.Require().Error(err)
 }
 
-func (suite *e2e.KeeperTestSuite) TestCreateDenom() {
+func (suite *KeeperTestSuite) TestCreateDenom() {
 	var (
 		primaryDenom            = types.DefaultParams().DenomCreationFee[0].Denom
 		secondaryDenom          = testhelpers.SecondaryDenom

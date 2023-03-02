@@ -9,7 +9,7 @@ import (
 	"github.com/CosmWasm/token-factory/x/tokenfactory/types"
 )
 
-func (suite *e2e.KeeperTestSuite) TestAdminMsgs() {
+func (suite *KeeperTestSuite) TestAdminMsgs() {
 	addr0bal := int64(0)
 	addr1bal := int64(0)
 
@@ -73,7 +73,7 @@ func (suite *e2e.KeeperTestSuite) TestAdminMsgs() {
 // * Noone can mint tokens for a denom that doesn't exist
 // * Only the admin of a denom can mint tokens for it
 // * The admin of a denom can mint tokens for it
-func (suite *e2e.KeeperTestSuite) TestMintDenom() {
+func (suite *KeeperTestSuite) TestMintDenom() {
 	var addr0bal int64
 
 	// Create a denom
@@ -123,7 +123,7 @@ func (suite *e2e.KeeperTestSuite) TestMintDenom() {
 	}
 }
 
-func (suite *e2e.KeeperTestSuite) TestBurnDenom() {
+func (suite *KeeperTestSuite) TestBurnDenom() {
 	var addr0bal int64
 
 	// Create a denom.
@@ -185,7 +185,7 @@ func (suite *e2e.KeeperTestSuite) TestBurnDenom() {
 	}
 }
 
-func (suite *e2e.KeeperTestSuite) TestChangeAdminDenom() {
+func (suite *KeeperTestSuite) TestChangeAdminDenom() {
 	for _, tc := range []struct {
 		desc                    string
 		msgChangeAdmin          func(denom string) *types.MsgChangeAdmin
@@ -273,7 +273,7 @@ func (suite *e2e.KeeperTestSuite) TestChangeAdminDenom() {
 	}
 }
 
-func (suite *e2e.KeeperTestSuite) TestSetDenomMetaData() {
+func (suite *KeeperTestSuite) TestSetDenomMetaData() {
 	// setup test
 	suite.SetupTest()
 	suite.CreateDefaultDenom()

@@ -10,7 +10,7 @@ import (
 )
 
 // TestMintDenomMsg tests TypeMsgMint message is emitted on a successful mint
-func (suite *e2e.KeeperTestSuite) TestMintDenomMsg() {
+func (suite *KeeperTestSuite) TestMintDenomMsg() {
 	// Create a denom
 	suite.CreateDefaultDenom()
 
@@ -50,7 +50,7 @@ func (suite *e2e.KeeperTestSuite) TestMintDenomMsg() {
 }
 
 // TestBurnDenomMsg tests TypeMsgBurn message is emitted on a successful burn
-func (suite *e2e.KeeperTestSuite) TestBurnDenomMsg() {
+func (suite *KeeperTestSuite) TestBurnDenomMsg() {
 	// Create a denom.
 	suite.CreateDefaultDenom()
 	// mint 10 default token for testAcc[0]
@@ -90,7 +90,7 @@ func (suite *e2e.KeeperTestSuite) TestBurnDenomMsg() {
 }
 
 // TestCreateDenomMsg tests TypeMsgCreateDenom message is emitted on a successful denom creation
-func (suite *e2e.KeeperTestSuite) TestCreateDenomMsg() {
+func (suite *KeeperTestSuite) TestCreateDenomMsg() {
 	defaultDenomCreationFee := types.Params{DenomCreationFee: sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(50000000)))}
 	for _, tc := range []struct {
 		desc                  string
@@ -129,7 +129,7 @@ func (suite *e2e.KeeperTestSuite) TestCreateDenomMsg() {
 }
 
 // TestChangeAdminDenomMsg tests TypeMsgChangeAdmin message is emitted on a successful admin change
-func (suite *e2e.KeeperTestSuite) TestChangeAdminDenomMsg() {
+func (suite *KeeperTestSuite) TestChangeAdminDenomMsg() {
 	for _, tc := range []struct {
 		desc                    string
 		msgChangeAdmin          func(denom string) *types.MsgChangeAdmin
@@ -180,7 +180,7 @@ func (suite *e2e.KeeperTestSuite) TestChangeAdminDenomMsg() {
 }
 
 // TestSetDenomMetaDataMsg tests TypeMsgSetDenomMetadata message is emitted on a successful denom metadata change
-func (suite *e2e.KeeperTestSuite) TestSetDenomMetaDataMsg() {
+func (suite *KeeperTestSuite) TestSetDenomMetaDataMsg() {
 	// setup test
 	suite.SetupTest()
 	suite.CreateDefaultDenom()

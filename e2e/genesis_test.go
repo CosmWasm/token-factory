@@ -7,7 +7,7 @@ import (
 	"github.com/CosmWasm/token-factory/x/tokenfactory/types"
 )
 
-func (suite *e2e.KeeperTestSuite) TestGenesis() {
+func (suite *KeeperTestSuite) TestGenesis() {
 	genesisState := types.GenesisState{
 		FactoryDenoms: []types.GenesisDenom{
 			{

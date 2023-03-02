@@ -1,8 +1,6 @@
-module github.com/CosmWasm/token-factory
+module github.com/CosmWasm/token-factory/x
 
 go 1.19
-
-replace github.com/CosmWasm/token-factory/demo => ./demo
 
 require (
 	github.com/CosmWasm/wasmd v0.30.0
