@@ -10,7 +10,7 @@ SIMAPP = ./demo/app
 
 # for dockerized protobuf tools
 DOCKER := $(shell which docker)
-BUF_IMAGE=bufbuild/buf@sha256:3cb1f8a4b48bd5ad8f09168f10f607ddc318af202f5c057d52a45216793d85e5 #v1.4.0
+BUF_IMAGE=bufbuild/buf:1.15.0
 DOCKER_BUF := $(DOCKER) run --rm -v $(CURDIR):/workspace --workdir /workspace $(BUF_IMAGE)
 HTTPS_GIT := https://github.com/CosmWasm/token-factory.git
 
@@ -165,8 +165,7 @@ format: format-tools
 ###############################################################################
 ###                                Protobuf                                 ###
 ###############################################################################
-protoVer=0.11.5
-protoImageName=ghcr.io/cosmos/proto-builder:$(protoVer)
+protoImageName=tendermintdev/sdk-proto-gen:v0.7
 protoImage=$(DOCKER) run --rm -v $(CURDIR):/workspace --workdir /workspace $(protoImageName)
 
 proto-all: proto-format proto-lint proto-gen format
@@ -183,7 +182,7 @@ proto-swagger-gen:
 	@./scripts/protoc-swagger-gen.sh
 
 proto-lint:
-	@$(DOCKER_BUF) lint --error-format=json
+	@$(DOCKER_BUF) lint --error-format=json proto/
 
 proto-check-breaking:
 	@$(DOCKER_BUF) breaking --against $(HTTPS_GIT)#branch=main

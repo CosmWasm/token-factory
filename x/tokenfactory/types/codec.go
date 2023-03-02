@@ -10,7 +10,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
 )
 
-func RegisterCodec(cdc *codec.LegacyAmino) {
+func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateDenom{}, "cosmwasm/tokenfactory/create-denom", nil)
 	cdc.RegisterConcrete(&MsgMint{}, "cosmwasm/tokenfactory/mint", nil)
 	cdc.RegisterConcrete(&MsgBurn{}, "cosmwasm/tokenfactory/burn", nil)
@@ -36,7 +36,7 @@ var (
 )
 
 func init() {
-	RegisterCodec(amino)
+	RegisterLegacyAminoCodec(amino)
 	// Register all Amino interfaces and concrete types on the authz Amino codec so that this can later be
 	// used to properly serialize MsgGrant and MsgExec instances
 	// Note: these 3 are inlines from authz/codec in 0.46 so we can be compatible with 0.45
