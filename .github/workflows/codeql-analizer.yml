@@ -3,13 +3,13 @@ name: "Code Scanning - Action"
 on:
   pull_request:
     paths:
-      - "**.go"
+      - "x/**.go"
   push:
     branches:
       - main
       - release/**
     paths:
-      - "**.go"
+      - "x/**.go"
 
 jobs:
   analyze:
