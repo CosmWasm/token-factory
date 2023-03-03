@@ -68,7 +68,7 @@ jobs:
           name: Lint
           command: |
             golangci-lint run --version
-            golangci-lint run --tests=false --timeout=5m0s
+            golangci-lint run --tests=false --timeout=5m0s ./x/... ./demo/... ./e2e/...
 
   test-cover:
     executor: golang
