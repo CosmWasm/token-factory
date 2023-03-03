@@ -3,13 +3,13 @@ name: "Code Scanning - Action"
 on:
   pull_request:
     paths:
-      - "x/**.go"
+      - "**.go"
   push:
     branches:
       - main
       - release/**
     paths:
-      - "x/**.go"
+      - "**.go"
 
 jobs:
   analyze:
@@ -31,8 +31,7 @@ jobs:
         uses: github/codeql-action/init@v2
         with:
           languages: 'go'
-          queries: +security-and-quality,github/codeql/go/ql/src/experimental/InconsistentCode/DeferInLoop.ql@main,github/codeql/go/ql/src/experimental/Unsafe/WrongUsageOfUnsafe.ql@main,github/codeql/go/ql/src/experimental/CWE-369/DivideByZero.ql@main
-          packs: +crypto-com/cosmos-sdk-codeql
+          queries: crypto-com/cosmos-sdk-codeql@main,security-and-quality
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v2
