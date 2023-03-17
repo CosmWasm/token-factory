@@ -41,10 +41,10 @@ func (m *CustomMessenger) DispatchMsg(ctx sdk.Context, contractAddr sdk.AccAddre
 		// leave everything else for the wrapped version
 		var contractMsg bindingstypes.TokenFactoryMsg
 		if err := json.Unmarshal(msg.Custom, &contractMsg); err != nil {
-			return nil, nil, sdkerrors.Wrap(err, "token factory msg")
+			return nil, nil, errorsmod.Wrap(err, "token factory msg")
 		}
 		if contractMsg.Token == nil {
-			return nil, nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "nil token field")
+			return nil, nil, errorsmod.Wrap(sdkerrors.ErrUnknownRequest, "nil token field")
 		}
 		tokenMsg := contractMsg.Token
 

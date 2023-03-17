@@ -5,7 +5,6 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 const (
@@ -57,7 +56,7 @@ func DeconstructDenom(denom string) (creator string, subdenom string, err error)
 	creator = strParts[1]
 	creatorAddr, err := sdk.AccAddressFromBech32(creator)
 	if err != nil {
-		return "", "", sdkerrors.Wrapf(ErrInvalidDenom, "Invalid creator address (%s)", err)
+		return "", "", errorsmod.Wrapf(ErrInvalidDenom, "Invalid creator address (%s)", err)
 	}
 
 	// Handle the case where a denom has a slash in its subdenom. For example,
