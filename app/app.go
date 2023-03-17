@@ -287,8 +287,8 @@ type TokenApp struct {
 	configurator module.Configurator
 }
 
-// NewWasmApp returns a reference to an initialized WasmApp.
-func NewWasmApp(
+// NewTokenApp returns a reference to an initialized TokenApp.
+func NewTokenApp(
 	logger log.Logger,
 	db dbm.DB,
 	traceStore io.Writer,

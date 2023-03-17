@@ -1,6 +1,7 @@
 package types
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
@@ -31,7 +32,7 @@ func (m MsgCreateDenom) Type() string  { return TypeMsgCreateDenom }
 func (m MsgCreateDenom) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(m.Sender)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid sender address (%s)", err)
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid sender address (%s)", err)
 	}
 
 	_, err = GetTokenDenom(m.Sender, m.Subdenom)
@@ -66,11 +67,11 @@ func (m MsgMint) Type() string  { return TypeMsgMint }
 func (m MsgMint) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(m.Sender)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid sender address (%s)", err)
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid sender address (%s)", err)
 	}
 
 	if !m.Amount.IsValid() || m.Amount.Amount.Equal(sdk.ZeroInt()) {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, m.Amount.String())
+		return errorsmod.Wrap(sdkerrors.ErrInvalidCoins, m.Amount.String())
 	}
 
 	return nil

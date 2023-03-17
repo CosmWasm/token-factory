@@ -11,7 +11,6 @@ import (
 	"github.com/cometbft/cometbft/crypto/ed25519"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 
-	"cosmossdk.io/simapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/CosmWasm/token-factory/app"
@@ -25,7 +24,7 @@ func CreateTestInput() (*app.TokenApp, sdk.Context) {
 }
 
 func FundAccount(t *testing.T, ctx sdk.Context, osmosis *app.TokenApp, acct sdk.AccAddress) {
-	err := simapp.FundAccount(osmosis.BankKeeper, ctx, acct, sdk.NewCoins(
+	err := app.FundAccount(osmosis.BankKeeper, ctx, acct, sdk.NewCoins(
 		sdk.NewCoin("uosmo", sdk.NewInt(10000000000)),
 	))
 	require.NoError(t, err)
@@ -70,7 +69,7 @@ func instantiateReflectContract(t *testing.T, ctx sdk.Context, tokenz *app.Token
 }
 
 func fundAccount(t *testing.T, ctx sdk.Context, tokenz *app.TokenApp, addr sdk.AccAddress, coins sdk.Coins) {
-	err := simapp.FundAccount(
+	err := app.FundAccount(
 		tokenz.BankKeeper,
 		ctx,
 		addr,
