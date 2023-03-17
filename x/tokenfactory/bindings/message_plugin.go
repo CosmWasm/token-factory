@@ -98,14 +98,14 @@ func PerformCreateDenom(f *tokenfactorykeeper.Keeper, b *bankkeeper.BaseKeeper, 
 		msgCreateDenom,
 	)
 	if err != nil {
-		return nil, sdkerrors.Wrap(err, "creating denom")
+		return nil, errorsmod.Wrap(err, "creating denom")
 	}
 
 	if createDenom.Metadata != nil {
 		newDenom := resp.NewTokenDenom
 		err := PerformSetMetadata(f, b, ctx, contractAddr, newDenom, *createDenom.Metadata)
 		if err != nil {
-			return nil, sdkerrors.Wrap(err, "setting metadata")
+			return nil, errorsmod.Wrap(err, "setting metadata")
 		}
 	}
 
