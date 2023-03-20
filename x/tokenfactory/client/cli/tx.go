@@ -185,7 +185,7 @@ func NewBurnFromCmd() *cobra.Command {
 
 			txf := tx.NewFactoryCLI(clientCtx, cmd.Flags()).WithTxConfig(clientCtx.TxConfig).WithAccountRetriever(clientCtx.AccountRetriever)
 
-			fromAddr, err := sdk.AccAddressFromBech32()
+			fromAddr, err := sdk.AccAddressFromBech32(args[0])
 			if err != nil {
 				return err
 			}
