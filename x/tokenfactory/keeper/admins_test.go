@@ -146,7 +146,6 @@ func (suite *KeeperTestSuite) TestMintDenom() {
 	}
 }
 
-
 func (suite *KeeperTestSuite) TestBurnDenom() {
 	// Create a denom.
 	suite.CreateDefaultDenom()
@@ -304,7 +303,6 @@ func (suite *KeeperTestSuite) TestForceTransferDenom() {
 		})
 	}
 }
-
 
 func (suite *KeeperTestSuite) TestChangeAdminDenom() {
 	for _, tc := range []struct {
