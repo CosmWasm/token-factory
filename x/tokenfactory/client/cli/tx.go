@@ -31,8 +31,10 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(
 		NewCreateDenomCmd(),
 		NewMintCmd(),
+		NewMintToCmd(),
 		NewBurnCmd(),
-		// NewForceTransferCmd(),
+		NewBurnFromCmd(),
+		NewForceTransferCmd(),
 		NewChangeAdminCmd(),
 		NewModifyDenomMetadataCmd(),
 	)
@@ -71,7 +73,7 @@ func NewCreateDenomCmd() *cobra.Command {
 func NewMintCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "mint [amount] [flags]",
-		Short: "Mint a denom to an address. Must have admin authority to do so.",
+		Short: "Mint a denom to your address. Must have admin authority to do so.",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -89,6 +91,44 @@ func NewMintCmd() *cobra.Command {
 			msg := types.NewMsgMint(
 				clientCtx.GetFromAddress().String(),
 				amount,
+			)
+
+			return tx.GenerateOrBroadcastTxWithFactory(clientCtx, txf, msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+	return cmd
+}
+
+// NewMintToCmd broadcast MsgMintTo
+func NewMintToCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "mint-to [address] [amount] [flags]",
+		Short: "Mint a denom to an address. Must have admin authority to do so.",
+		Args:  cobra.ExactArgs(2),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			txf := tx.NewFactoryCLI(clientCtx, cmd.Flags()).WithTxConfig(clientCtx.TxConfig).WithAccountRetriever(clientCtx.AccountRetriever)
+
+			toAddr, err := sdk.AccAddressFromBech32(args[0])
+			if err != nil {
+				return err
+			}
+
+			amount, err := sdk.ParseCoinNormalized(args[1])
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgMintTo(
+				clientCtx.GetFromAddress().String(),
+				amount,
+				toAddr.String(),
 			)
 
 			return tx.GenerateOrBroadcastTxWithFactory(clientCtx, txf, msg)
@@ -131,39 +171,77 @@ func NewBurnCmd() *cobra.Command {
 	return cmd
 }
 
-// // NewForceTransferCmd broadcast MsgForceTransfer
-// func NewForceTransferCmd() *cobra.Command {
-// 	cmd := &cobra.Command{
-// 		Use:   "force-transfer [amount] [transfer-from-address] [transfer-to-address] [flags]",
-// 		Short: "Force transfer tokens from one address to another address. Must have admin authority to do so.",
-// 		Args:  cobra.ExactArgs(3),
-// 		RunE: func(cmd *cobra.Command, args []string) error {
-// 			clientCtx, err := client.GetClientTxContext(cmd)
-// 			if err != nil {
-// 				return err
-// 			}
+// NewBurnFromCmd broadcast MsgBurnFrom
+func NewBurnFromCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "burn-from [address] [amount] [flags]",
+		Short: "Burn tokens from an address. Must have admin authority to do so.",
+		Args:  cobra.ExactArgs(2),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
 
-// 			txf := tx.NewFactoryCLI(clientCtx, cmd.Flags()).WithTxConfig(clientCtx.TxConfig).WithAccountRetriever(clientCtx.AccountRetriever)
+			txf := tx.NewFactoryCLI(clientCtx, cmd.Flags()).WithTxConfig(clientCtx.TxConfig).WithAccountRetriever(clientCtx.AccountRetriever)
 
-// 			amount, err := sdk.ParseCoinNormalized(args[0])
-// 			if err != nil {
-// 				return err
-// 			}
+			fromAddr, err := sdk.AccAddressFromBech32()
+			if err != nil {
+				return err
+			}
 
-// 			msg := types.NewMsgForceTransfer(
-// 				clientCtx.GetFromAddress().String(),
-// 				amount,
-// 				args[1],
-// 				args[2],
-// 			)
+			amount, err := sdk.ParseCoinNormalized(args[1])
+			if err != nil {
+				return err
+			}
 
-// 			return tx.GenerateOrBroadcastTxWithFactory(clientCtx, txf, msg)
-// 		},
-// 	}
+			msg := types.NewMsgBurnFrom(
+				clientCtx.GetFromAddress().String(),
+				amount,
+				fromAddr.String(),
+			)
 
-// 	flags.AddTxFlagsToCmd(cmd)
-// 	return cmd
-// }
+			return tx.GenerateOrBroadcastTxWithFactory(clientCtx, txf, msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+	return cmd
+}
+
+// NewForceTransferCmd broadcast MsgForceTransfer
+func NewForceTransferCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "force-transfer [amount] [transfer-from-address] [transfer-to-address] [flags]",
+		Short: "Force transfer tokens from one address to another address. Must have admin authority to do so.",
+		Args:  cobra.ExactArgs(3),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			txf := tx.NewFactoryCLI(clientCtx, cmd.Flags()).WithTxConfig(clientCtx.TxConfig).WithAccountRetriever(clientCtx.AccountRetriever)
+
+			amount, err := sdk.ParseCoinNormalized(args[0])
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgForceTransfer(
+				clientCtx.GetFromAddress().String(),
+				amount,
+				args[1],
+				args[2],
+			)
+
+			return tx.GenerateOrBroadcastTxWithFactory(clientCtx, txf, msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+	return cmd
+}
 
 // NewChangeAdminCmd broadcast MsgChangeAdmin
 func NewChangeAdminCmd() *cobra.Command {
