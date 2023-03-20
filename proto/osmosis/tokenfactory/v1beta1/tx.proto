@@ -94,8 +94,6 @@ message MsgSetDenomMetadata {
 // MsgSetDenomMetadata message.
 message MsgSetDenomMetadataResponse {}
 
-// MsgForceTransfer is the sdk.Msg type for allowing an admin account to force
-// transfer tokens from one account to another.
 message MsgForceTransfer {
   string sender = 1 [ (gogoproto.moretags) = "yaml:\"sender\"" ];
   cosmos.base.v1beta1.Coin amount = 2 [
@@ -108,6 +106,4 @@ message MsgForceTransfer {
       [ (gogoproto.moretags) = "yaml:\"transfer_to_address\"" ];
 }
 
-// MsgForceTransferResponse defines the response structure for an executed
-// MsgForceTransfer message.
 message MsgForceTransferResponse {}
