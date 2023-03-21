@@ -48,10 +48,9 @@ type MintTokens struct {
 }
 
 type BurnTokens struct {
-	Denom  string  `json:"denom"`
-	Amount sdk.Int `json:"amount"`
-	// BurnFromAddress must be set to "" for now.
-	BurnFromAddress string `json:"burn_from_address"`
+	Denom           string  `json:"denom"`
+	Amount          sdk.Int `json:"amount"`
+	BurnFromAddress string  `json:"burn_from_address"`
 }
 
 type SetMetadata struct {

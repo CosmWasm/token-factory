@@ -9,7 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 )
 
-func ParamChanges(r *rand.Rand) []simtypes.ParamChange {
+func ParamChanges(_ *rand.Rand) []simtypes.ParamChange {
 	return []simtypes.ParamChange{
 		simulation.NewSimParamChange(
 			types.ModuleName,
