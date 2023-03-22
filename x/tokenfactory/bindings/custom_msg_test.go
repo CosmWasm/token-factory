@@ -228,6 +228,7 @@ func TestForceTransfer(t *testing.T) {
 	coin := balances[0]
 	require.Equal(t, sdk.NewInt(100), coin.Amount)
 }
+
 func TestBurnMsg(t *testing.T) {
 	creator := RandomAccountAddress()
 	osmosis, ctx := SetupCustomApp(t, creator)
