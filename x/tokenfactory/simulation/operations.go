@@ -23,6 +23,7 @@ const (
 	OpWeightMsgBurn             = "op_weight_msg_burn"
 	OpWeightMsgChangeAdmin      = "op_weight_msg_change_admin"
 	OpWeightMsgSetDenomMetadata = "op_weight_msg_set_denom_metadata"
+	OpWeightMsgForceTransfer    = "op_weight_msg_force_transfer"
 )
 
 type TokenfactoryKeeper interface {
@@ -50,6 +51,7 @@ func WeightedOperations(
 		weightMsgBurn             int
 		weightMsgChangeAdmin      int
 		weightMsgSetDenomMetadata int
+		weightMsgForceTransfer    int
 	)
 
 	simstate.AppParams.GetOrGenerate(simstate.Cdc, OpWeightMsgCreateDenom, &weightMsgCreateDenom, nil,
@@ -75,6 +77,11 @@ func WeightedOperations(
 	simstate.AppParams.GetOrGenerate(simstate.Cdc, OpWeightMsgSetDenomMetadata, &weightMsgSetDenomMetadata, nil,
 		func(_ *rand.Rand) {
 			weightMsgSetDenomMetadata = params.DefaultWeightMsgSetDenomMetadata
+		},
+	)
+	simstate.AppParams.GetOrGenerate(simstate.Cdc, OpWeightMsgForceTransfer, &weightMsgForceTransfer, nil,
+		func(_ *rand.Rand) {
+			weightMsgForceTransfer = params.DefaultWeightMsgForceTransfer
 		},
 	)
 

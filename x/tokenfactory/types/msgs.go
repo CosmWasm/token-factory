@@ -77,6 +77,13 @@ func (m MsgMint) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid sender address (%s)", err)
 	}
 
+	if m.MintToAddress != "" {
+		_, err = sdk.AccAddressFromBech32(m.MintToAddress)
+		if err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid mint to address (%s)", err)
+		}
+	}
+
 	if !m.Amount.IsValid() || m.Amount.Amount.Equal(sdk.ZeroInt()) {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, m.Amount.String())
 	}
@@ -122,6 +129,13 @@ func (m MsgBurn) ValidateBasic() error {
 
 	if !m.Amount.IsValid() || m.Amount.Amount.Equal(sdk.ZeroInt()) {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, m.Amount.String())
+	}
+
+	if m.BurnFromAddress != "" {
+		_, err = sdk.AccAddressFromBech32(m.BurnFromAddress)
+		if err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid burn from address (%s)", err)
+		}
 	}
 
 	return nil
