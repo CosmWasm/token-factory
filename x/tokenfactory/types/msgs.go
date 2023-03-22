@@ -172,11 +172,11 @@ func (m MsgForceTransfer) ValidateBasic() error {
 
 	_, err = sdk.AccAddressFromBech32(m.TransferFromAddress)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid address (%s)", err)
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid from address (%s)", err)
 	}
 	_, err = sdk.AccAddressFromBech32(m.TransferToAddress)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid address (%s)", err)
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid to address (%s)", err)
 	}
 
 	if !m.Amount.IsValid() {

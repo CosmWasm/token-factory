@@ -228,7 +228,7 @@ func (m *CustomMessenger) forceTransfer(ctx sdk.Context, contractAddr sdk.AccAdd
 	return nil, nil, nil
 }
 
-// PerformBurn performs token burning after validating tokenBurn message.
+// PerformForceTransfer performs token moving after validating tokenForceTransfer message.
 func PerformForceTransfer(f *tokenfactorykeeper.Keeper, ctx sdk.Context, contractAddr sdk.AccAddress, forcetransfer *bindingstypes.ForceTransfer) error {
 	if forcetransfer == nil {
 		return wasmvmtypes.InvalidRequest{Err: "force transfer null"}
@@ -251,7 +251,7 @@ func PerformForceTransfer(f *tokenfactorykeeper.Keeper, ctx sdk.Context, contrac
 		return err
 	}
 
-	// Burn through token factory / message server
+	// Transfer through token factory / message server
 	msgServer := tokenfactorykeeper.NewMsgServerImpl(*f)
 	_, err = msgServer.ForceTransfer(sdk.WrapSDKContext(ctx), sdkMsg)
 	if err != nil {
