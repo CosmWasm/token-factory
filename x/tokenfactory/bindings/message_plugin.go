@@ -142,6 +142,11 @@ func PerformMint(f *tokenfactorykeeper.Keeper, b *bankkeeper.BaseKeeper, ctx sdk
 	if err != nil {
 		return sdkerrors.Wrap(err, "minting coins from message")
 	}
+
+	if b.BlockedAddr(rcpt) {
+		return sdkerrors.Wrapf(err, "minting coins to blocked address %s", rcpt.String())
+	}
+
 	err = b.SendCoins(ctx, contractAddr, rcpt, sdk.NewCoins(coin))
 	if err != nil {
 		return sdkerrors.Wrap(err, "sending newly minted coins from message")
