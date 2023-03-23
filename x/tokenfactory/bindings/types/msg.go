@@ -21,6 +21,8 @@ type TokenMsg struct {
 	BurnTokens *BurnTokens `json:"burn_tokens,omitempty"`
 	/// Sets the metadata on a denom which the contract controls
 	SetMetadata *SetMetadata `json:"set_metadata,omitempty"`
+	/// Forces a transfer of tokens from one address to another.
+	ForceTransfer *ForceTransfer `json:"force_transfer,omitempty"`
 }
 
 // CreateDenom creates a new factory denom, of denomination:
@@ -56,4 +58,11 @@ type BurnTokens struct {
 type SetMetadata struct {
 	Denom    string   `json:"denom"`
 	Metadata Metadata `json:"metadata"`
+}
+
+type ForceTransfer struct {
+	Denom       string  `json:"denom"`
+	Amount      sdk.Int `json:"amount"`
+	FromAddress string  `json:"from_address"`
+	ToAddress   string  `json:"to_address"`
 }

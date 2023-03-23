@@ -175,6 +175,60 @@ func TestMintMsg(t *testing.T) {
 	require.Equal(t, resp.Denom, coin.Denom)
 }
 
+func TestForceTransfer(t *testing.T) {
+	creator := RandomAccountAddress()
+	osmosis, ctx := SetupCustomApp(t, creator)
+
+	lucky := RandomAccountAddress()
+	rcpt := RandomAccountAddress()
+	reflect := instantiateReflectContract(t, ctx, osmosis, lucky)
+	require.NotEmpty(t, reflect)
+
+	// Fund reflect contract with 100 base denom creation fees
+	reflectAmount := sdk.NewCoins(sdk.NewCoin(types.DefaultParams().DenomCreationFee[0].Denom, types.DefaultParams().DenomCreationFee[0].Amount.MulRaw(100)))
+	fundAccount(t, ctx, osmosis, reflect, reflectAmount)
+
+	// lucky was broke
+	balances := osmosis.BankKeeper.GetAllBalances(ctx, lucky)
+	require.Empty(t, balances)
+
+	// Create denom for minting
+	msg := bindings.TokenMsg{CreateDenom: &bindings.CreateDenom{
+		Subdenom: "SUN",
+	}}
+	err := executeCustom(t, ctx, osmosis, reflect, lucky, msg, sdk.Coin{})
+	require.NoError(t, err)
+	sunDenom := fmt.Sprintf("factory/%s/%s", reflect.String(), msg.CreateDenom.Subdenom)
+
+	amount, ok := sdk.NewIntFromString("808010808")
+	require.True(t, ok)
+
+	// Mint new tokens to lucky
+	msg = bindings.TokenMsg{MintTokens: &bindings.MintTokens{
+		Denom:         sunDenom,
+		Amount:        amount,
+		MintToAddress: lucky.String(),
+	}}
+	err = executeCustom(t, ctx, osmosis, reflect, lucky, msg, sdk.Coin{})
+	require.NoError(t, err)
+
+	// Force move 100 tokens from lucky to rcpt
+	msg = bindings.TokenMsg{ForceTransfer: &bindings.ForceTransfer{
+		Denom:       sunDenom,
+		Amount:      sdk.NewInt(100),
+		FromAddress: lucky.String(),
+		ToAddress:   rcpt.String(),
+	}}
+	err = executeCustom(t, ctx, osmosis, reflect, lucky, msg, sdk.Coin{})
+	require.NoError(t, err)
+
+	// check the balance of rcpt
+	balances = osmosis.BankKeeper.GetAllBalances(ctx, rcpt)
+	require.Len(t, balances, 1)
+	coin := balances[0]
+	require.Equal(t, sdk.NewInt(100), coin.Amount)
+}
+
 func TestBurnMsg(t *testing.T) {
 	creator := RandomAccountAddress()
 	osmosis, ctx := SetupCustomApp(t, creator)
@@ -199,7 +253,7 @@ func TestBurnMsg(t *testing.T) {
 	require.NoError(t, err)
 	sunDenom := fmt.Sprintf("factory/%s/%s", reflect.String(), msg.CreateDenom.Subdenom)
 
-	amount, ok := sdk.NewIntFromString("808010808")
+	amount, ok := sdk.NewIntFromString("808010809")
 	require.True(t, ok)
 
 	msg = bindings.TokenMsg{MintTokens: &bindings.MintTokens{
@@ -210,14 +264,16 @@ func TestBurnMsg(t *testing.T) {
 	err = executeCustom(t, ctx, osmosis, reflect, lucky, msg, sdk.Coin{})
 	require.NoError(t, err)
 
-	// can't burn from different address
+	// can burn from different address with burnFrom
+	amt, ok := sdk.NewIntFromString("1")
+	require.True(t, ok)
 	msg = bindings.TokenMsg{BurnTokens: &bindings.BurnTokens{
 		Denom:           sunDenom,
-		Amount:          amount,
+		Amount:          amt,
 		BurnFromAddress: lucky.String(),
 	}}
 	err = executeCustom(t, ctx, osmosis, reflect, lucky, msg, sdk.Coin{})
-	require.Error(t, err)
+	require.NoError(t, err)
 
 	// lucky needs to send balance to reflect contract to burn it
 	luckyBalance := osmosis.BankKeeper.GetAllBalances(ctx, lucky)
@@ -226,7 +282,7 @@ func TestBurnMsg(t *testing.T) {
 
 	msg = bindings.TokenMsg{BurnTokens: &bindings.BurnTokens{
 		Denom:           sunDenom,
-		Amount:          amount,
+		Amount:          amount.Abs().Sub(sdk.NewInt(1)),
 		BurnFromAddress: reflect.String(),
 	}}
 	err = executeCustom(t, ctx, osmosis, reflect, lucky, msg, sdk.Coin{})

@@ -8,6 +8,9 @@ if [ $# -ne 1 ]; then
 fi
 
 tag="$1"
+
+# From CosmosContracts/token-bindings
+
 url="https://github.com/CosmWasm/token-bindings/releases/download/$tag/token_reflect.wasm"
 echo "Downloading $url ..."
 wget -O "token_reflect.wasm" "$url"

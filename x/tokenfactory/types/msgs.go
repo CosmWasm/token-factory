@@ -77,6 +77,13 @@ func (m MsgMint) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid sender address (%s)", err)
 	}
 
+	if m.MintToAddress != "" {
+		_, err = sdk.AccAddressFromBech32(m.MintToAddress)
+		if err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid mint to address (%s)", err)
+		}
+	}
+
 	if !m.Amount.IsValid() || m.Amount.Amount.Equal(sdk.ZeroInt()) {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, m.Amount.String())
 	}
@@ -124,6 +131,13 @@ func (m MsgBurn) ValidateBasic() error {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, m.Amount.String())
 	}
 
+	if m.BurnFromAddress != "" {
+		_, err = sdk.AccAddressFromBech32(m.BurnFromAddress)
+		if err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid burn from address (%s)", err)
+		}
+	}
+
 	return nil
 }
 
@@ -158,11 +172,11 @@ func (m MsgForceTransfer) ValidateBasic() error {
 
 	_, err = sdk.AccAddressFromBech32(m.TransferFromAddress)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid address (%s)", err)
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid from address (%s)", err)
 	}
 	_, err = sdk.AccAddressFromBech32(m.TransferToAddress)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid address (%s)", err)
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid to address (%s)", err)
 	}
 
 	if !m.Amount.IsValid() {
