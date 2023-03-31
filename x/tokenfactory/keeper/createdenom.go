@@ -81,6 +81,9 @@ func (k Keeper) chargeForCreateDenom(ctx sdk.Context, creatorAddr string, _ stri
 		if err := k.communityPoolKeeper.FundCommunityPool(ctx, creationFee, accAddr); err != nil {
 			return err
 		}
+	} else {
+		gasIncrease := k.GetParams(ctx).DenomCreationGasConsume
+		ctx.GasMeter().ConsumeGas(gasIncrease, "consume denom creation gas")
 	}
 	return nil
 }

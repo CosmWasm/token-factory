@@ -28,7 +28,8 @@ func DefaultParams() Params {
 	return Params{
 		// this was from osmosis
 		// DenomCreationFee: sdk.NewCoins(sdk.NewInt64Coin(appparams.BaseCoinUnit, 10_000_000)), // 10 OSMO
-		DenomCreationFee: sdk.NewCoins(sdk.NewInt64Coin(sdk.DefaultBondDenom, 10_000_000)), // 10 OSMO
+		DenomCreationFee:        sdk.NewCoins(sdk.NewInt64Coin(sdk.DefaultBondDenom, 10_000_000)), // 10 OSMO
+		DenomCreationGasConsume: 2_000_000,
 	}
 }
 
