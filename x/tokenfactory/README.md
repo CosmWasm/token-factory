@@ -13,7 +13,7 @@ created denom. Once a denom is created, the original creator is given
 - Create a transfer of their denom between any two accounts
 - Change the admin. In the future, more admin capabilities may be added. Admins
   can choose to share admin privileges with other accounts using the authz
-  module. The `ChangeAdmin` functionality, allows changing the master admin
+  module. The `ChangeAdmin` functionality allows changing the master admin
   account, or even setting it to `""`, meaning no account has admin privileges
   of the asset.
 
@@ -104,9 +104,12 @@ Setting of metadata for a specific denom is only allowed for the admin of the de
 It allows the overwriting of the denom metadata in the bank module.
 
 ```go
-message MsgChangeAdmin {
+message MsgSetDenomMetadata {
   string sender = 1 [ (gogoproto.moretags) = "yaml:\"sender\"" ];
-  cosmos.bank.v1beta1.Metadata metadata = 2 [ (gogoproto.moretags) = "yaml:\"metadata\"", (gogoproto.nullable)   = false ];
+  cosmos.bank.v1beta1.Metadata metadata = 2 [
+    (gogoproto.moretags) = "yaml:\"metadata\"",
+    (gogoproto.nullable) = false
+  ];
 }
 ```
 
