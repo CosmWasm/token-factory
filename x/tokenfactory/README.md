@@ -98,6 +98,11 @@ message MsgChangeAdmin {
 }
 ```
 
+**State Modifications:**
+
+- Check that sender of the message is the admin of denom. 
+- Modify `AuthorityMetadata` state entry to change the admin of the denom. 
+
 ### SetDenomMetadata
 
 Setting of metadata for a specific denom is only allowed for the admin of the denom.
@@ -115,8 +120,8 @@ message MsgSetDenomMetadata {
 
 **State Modifications:**
 
-- Check that sender of the message is the admin of denom
-- Modify `AuthorityMetadata` state entry to change the admin of the denom
+- Check that sender of the message is the admin of denom.
+- Update `DenomMetaData` via bank keeper.
 
 ## Expectations from the chain
 
